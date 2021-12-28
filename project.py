@@ -13,6 +13,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeRegressor
 import seaborn as sns
 from sklearn.impute import KNNImputer
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+from sklearn.impute import SimpleImputer
 
 data = pd.read_csv('C:\\Users\\natal\\Desktop\\project_data.csv',header=0,sep='\t')
 enc = LabelEncoder()
@@ -35,27 +38,69 @@ data['tkliwosc miesni'] = enc.fit_transform(data['tkliwosc miesni'])
 data['plec'] = enc.fit_transform(data['plec'])
 data['API'] = data['API'].str[:-1]
 data['SBI'] = data['SBI'].str[:-1]
+imputer  = KNNImputer()
+imputer1 = IterativeImputer()
+imputer2 = SimpleImputer(strategy='most_frequent')
 #print(data.head())
+
 column_names = ['16-B','16-P','11-B','11-P','24-B','24-P','36-B','36-P','31-B','31-P','44-B','44-P']
 y = data[['44-P']]
-X = data.drop(columns=column_names)
+#X = data.drop(columns=column_names)
 #print(X)
 #msno.matrix(X)
 #plt.show()
 #brak danych w ostatnich 12 kolumnach
-X1 = X.iloc[:,1:57]
+#X1 = X.iloc[:,1:57]
 #print(X1)
 
-X1 = X1.iloc[:,2:40]
-column_names_forP = ['PPD - 16 B','PPD - 16 P','PPD - 11 B','PPD - 11 P','PPD - 24 B','PPD - 24 P','PPD - 36 B','PPD - 36 P','PPD - 31 B','PPD - 31 P','PPD - 44','API','SBI']
+#X1 = X1.iloc[:,2:40]
+#column_names_forP = ['PPD - 16 B','PPD - 16 P','PPD - 11 B','PPD - 11 P','PPD - 24 B','PPD - 24 P','PPD - 36 B','PPD - 36 P','PPD - 31 B','PPD - 31 P','PPD - 44','API','SBI']
 #X1 = data[['API','SBI','PI - 44','GI - 44','PPD - 44','TWI - 44 suma','zgrzytanie','zaciskanie','sztywnosc','ograniczone otwieranie','bol miesni',
 #           'przygryzanie','cwiczenia','szyna','starcie-przednie','starcie-boczne','ubytki klinowe','impresje jezyka','linea alba','przerost zwaczy','tkliwosc miesni']]
-X1 = X1.drop(columns=column_names_forP)
-print(X1)
+#X1 = X1.drop(columns=column_names_forP)
+#print(X1)
+X2 = data[['API','SBI','PI - 16','PI - 11','PI - 24','PI - 36','PI - 31','PI - 44','GI - 16','GI - 11','GI - 24','GI - 36','GI - 31','GI - 44',
+           'PPD - 16','PPD - 11','PPD - 24','PPD - 36','PPD - 31','PPD - 44','TWI - 11 suma','TWI - 16 suma','TWI - 24 suma','TWI - 36 suma',
+           'TWI - 31 suma','TWI - 44 suma','Interleukina – 11B','Interleukina – 11P','Interleukina – 16B','Interleukina – 16P','Interleukina – 24B',
+           'Interleukina – 24P','Interleukina – 31B','Interleukina – 31P','Interleukina – 36B','Interleukina – 36P','Interleukina – 44B','Interleukina – 44P']]
+#X2-simpleimputer(most_frequnet),0.1 - 35% regresja liniowa
+X3 = data[['PI - 16','PI - 11','PI - 24','PI - 36','PI - 31','PI - 44','GI - 16','GI - 11','GI - 24','GI - 36','GI - 31','GI - 44',
+           'PPD - 16','PPD - 11','PPD - 24','PPD - 36','PPD - 31','PPD - 44','TWI - 11 suma','TWI - 16 suma','TWI - 24 suma','TWI - 36 suma',
+           'TWI - 31 suma','TWI - 44 suma','Interleukina – 11B','Interleukina – 11P','Interleukina – 16B','Interleukina – 16P','Interleukina – 24B',
+           'Interleukina – 24P','Interleukina – 31B','Interleukina – 31P','Interleukina – 36B','Interleukina – 36P','Interleukina – 44B','Interleukina – 44P',
+ 'zgrzytanie', 'zaciskanie', 'sztywnosc', 'ograniczone otwieranie', 'bol miesni',
+               'przygryzanie','cwiczenia','szyna','starcie-przednie','starcie-boczne','ubytki klinowe','impresje jezyka','linea alba','przerost zwaczy','tkliwosc miesni'
+]]
+#X3-34%
+X4 = data[['PI - 16','PI - 11','PI - 31','PI - 36','PI - 44','PPD - 16','PPD - 31',
+           'PPD - 44','TWI - 16 suma','PPD - 11','PPD - 36','TWI - 11 suma','TWI - 16 suma','TWI - 36 suma',
+           'TWI - 31 suma','TWI - 44 suma','Interleukina – 16B','Interleukina – 16P','Interleukina – 31B','Interleukina – 31P','Interleukina – 44B','Interleukina – 44P',
+           'Interleukina – 11B','Interleukina – 11P','Interleukina – 36B','Interleukina – 36P','zgrzytanie', 'zaciskanie', 'sztywnosc', 'ograniczone otwieranie', 'bol miesni',
+               'przygryzanie','cwiczenia','szyna','starcie-przednie','starcie-boczne','ubytki klinowe','impresje jezyka','linea alba','przerost zwaczy','tkliwosc miesni'
+]]
+#X4-33%
+X5 = data[['PI - 44','PPD - 44','TWI - 44 suma','Interleukina – 44B','Interleukina – 44P',
+           'zgrzytanie', 'zaciskanie', 'sztywnosc', 'ograniczone otwieranie', 'bol miesni',
+               'przygryzanie','cwiczenia','szyna','starcie-przednie','starcie-boczne','ubytki klinowe','impresje jezyka','linea alba','przerost zwaczy','tkliwosc miesni'
+]]
+#X5-12%
+X6 = data[['PI - 16','PI - 11','PI - 24','PI - 36','PI - 31','PI - 44','GI - 16','GI - 11','GI - 24','GI - 36','GI - 31','GI - 44',
+           'PPD - 16','PPD - 11','PPD - 24','PPD - 36','PPD - 31','PPD - 44','TWI - 11 suma','TWI - 16 suma','TWI - 24 suma','TWI - 36 suma',
+           'TWI - 31 suma','TWI - 44 suma','Interleukina – 11B','Interleukina – 11P','Interleukina – 16B','Interleukina – 16P','Interleukina – 24B',
+           'Interleukina – 24P','Interleukina – 31B','Interleukina – 31P','Interleukina – 36B','Interleukina – 36P','Interleukina – 44B','Interleukina – 44P']]
+#X6-35%
+X7 = data[['PI - 16','PI - 11','PI - 24','PI - 36','PI - 31','PI - 44','Interleukina – 11P','Interleukina – 16P',
+           'Interleukina – 24P','Interleukina – 31P','Interleukina – 36P','Interleukina – 44B','Interleukina – 44P',
+           'PPD - 16','PPD - 11','PPD - 24','PPD - 36','PPD - 31','PPD - 44','TWI - 16 suma','TWI - 24 suma','TWI - 36 suma',
+           'TWI - 31 suma','TWI - 44 suma','GI - 16','GI - 11','GI - 24','GI - 36','GI - 31','GI - 44']]
+#X7-34%
 
-X_train,X_test,y_train,y_test=train_test_split(X1,y,test_size=0.1,random_state=42)
-X_combined = pd.concat([X1, y.astype(float)], axis=1)
+X_combined = pd.concat([X2, y.astype(float)], axis=1)
 print(X_combined.corr())
+X2 = imputer2.fit_transform(X2)
+print(X2)
+X_train,X_test,y_train,y_test=train_test_split(X2,y,test_size=0.1,random_state=42)
+
 sns.heatmap(X_combined.corr(), annot=True, cmap="coolwarm")
 #plt.show()
 
