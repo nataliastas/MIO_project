@@ -17,7 +17,7 @@ from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
 from sklearn.impute import SimpleImputer
 
-data = pd.read_csv('C:\\Users\\natal\\Desktop\\project_data.csv',header=0,sep='\t')
+data = pd.read_csv('project_data.csv',header=0,sep='\t')
 enc = LabelEncoder()
 data['zgrzytanie'] = enc.fit_transform(data['zgrzytanie'])
 data['zaciskanie'] = enc.fit_transform(data['zaciskanie'])
@@ -38,9 +38,11 @@ data['tkliwosc miesni'] = enc.fit_transform(data['tkliwosc miesni'])
 data['plec'] = enc.fit_transform(data['plec'])
 data['API'] = data['API'].str[:-1]
 data['SBI'] = data['SBI'].str[:-1]
-imputer  = KNNImputer()
+imputer = KNNImputer()
 imputer1 = IterativeImputer()
 imputer2 = SimpleImputer(strategy='median')
+imputer3 = SimpleImputer(strategy='mean')
+imputer4 = SimpleImputer(strategy='most_frequent')
 #print(data.head())
 
 column_names = ['16-B','16-P','11-B','11-P','24-B','24-P','36-B','36-P','31-B','31-P','44-B','44-P']
@@ -51,7 +53,7 @@ X10 = data[['GI - 31', 'PPD - 44', 'PPD - 31 B', 'PPD - 11', 'PI - 44', 'PI - 24
             'GI - 16', 'PPD - 44 P', 'PPD - 44 B', 'PPD - 16', 'PI - 11', 'PPD - 31', 'PPD - 24', 'PI - 36', 'Interleukina – 44P',
             'Interleukina – 36P', 'Interleukina – 36B', 'Interleukina – 31B', 'Interleukina – 24B', 'Interleukina – 11P', 'GI - 44', 'GI - 11', 'API']]
 
-X10 = imputer1.fit_transform(X10)
+X10 = imputer4.fit_transform(X10)
 #print(X2)
 X_train,X_test,y_train,y_test=train_test_split(X10,y5,test_size=0.1,random_state=42)
 
