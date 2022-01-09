@@ -154,22 +154,26 @@ def perform_processing(
         model = model.fit(X_train, y_train)
         predictions = model.predict(X)
         return predictions
-    prediction1 = predict(X1_train,y1,X1)
-    prediction2 = predict(X2_train, y2, X2)
-    prediction3 = predict(X3_train, y3, X3)
-    prediction4 = predict(X4_train, y4, X4)
-    prediction5 = predict(X5_train, y5, X5)
-    prediction6 = predict(X6_train, y6, X6)
-    prediction7 = predict(X7_train, y7, X7)
-    prediction8 = predict(X8_train, y8, X8)
-    prediction9 = predict(X9_train, y9, X9)
-    prediction10 = predict(X10_train, y10, X10)
-    prediction11 = predict(X11_train, y11, X11)
-    prediction12 = predict(X12_train, y12, X12)
+    prediction1 = predict(X1_train,y1,X1).flatten()
+    prediction2 = predict(X2_train, y2, X2).flatten()
+    prediction3 = predict(X3_train, y3, X3).flatten()
+    prediction4 = predict(X4_train, y4, X4).flatten()
+    #prediction5 = predict(X5_train, y5, X5).flatten()
+    prediction6 = predict(X6_train, y6, X6).flatten()
+    prediction7 = predict(X7_train, y7, X7).flatten()
+    prediction8 = predict(X8_train, y8, X8).flatten()
+    prediction9 = predict(X9_train, y9, X9).flatten()
+    prediction10 = predict(X10_train, y10, X10).flatten()
+    prediction11 = predict(X11_train, y11, X11).flatten()
+    #prediction12 = predict(X12_train, y12, X12).flatten()
 
     column_names = ['16-B', '16-P', '11-B', '11-P', '24-B', '24-P', '36-B', '36-P', '31-B', '31-P', '44-B', '44-P']
-    predicted_data = pd.DataFrame(
-        np.random.randint(low=0, high=100, size=(len(input_data.index), len(column_names))),
-        columns=column_names
-    )
+    predicted = [prediction1, prediction2, prediction3, prediction4, prediction6, prediction7, prediction8, prediction9,
+                 prediction10,
+                 prediction11]
+
+    column_names = {'0': '16-B', '1': '16-P', '2': '11-B', '3': '11-P', '4': '24-P', '5': '36-B', '6': '36-P',
+                    '7': '31-B', '8': '31-P', '9': '44-B'}
+    predicted_data = pd.DataFrame(predicted).T
+    predicted_data = predicted_data.rename(columns=column_names)
     return predicted_data

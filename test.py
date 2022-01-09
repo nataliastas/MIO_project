@@ -161,20 +161,23 @@ def predict(X_train,y_train,X_test):
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     return predictions
-prediction1 = predict(X1_train,y1_train,X1_test)
-prediction2 = predict(X2_train, y2_train, X2_test)
-prediction3 = predict(X3_train, y3_train, X3_test)
-prediction4 = predict(X4_train, y4_train, X4_test)
-prediction5 = predict(X5_train, y5_train, X5_test)
-prediction6 = predict(X6_train, y6_train, X6_test)
-prediction7 = predict(X7_train, y7_train, X7_test)
-prediction8 = predict(X8_train, y8_train, X8_test)
-prediction9 = predict(X9_train, y9_train, X9_test)
-prediction10 = predict(X10_train, y10_train, X10_test)
-prediction11 = predict(X11_train, y11_train, X11_test)
-prediction12 = predict(X12_train, y12_train, X12_test)
-predicted = [prediction1,prediction2,prediction3,prediction4,prediction5,prediction6,prediction7,prediction8,prediction9,prediction10,
-             prediction11,prediction12]
-column_names = ['16-B', '16-P', '11-B', '11-P', '24-B', '24-P', '36-B', '36-P', '31-B', '31-P', '44-B', '44-P']
-predicted_data = pd.DataFrame(predicted,columns=column_names)
+prediction1 = predict(X1_train,y1_train,X1_test).flatten()
+prediction2 = predict(X2_train, y2_train, X2_test).flatten()
+prediction3 = predict(X3_train, y3_train, X3_test).flatten()
+prediction4 = predict(X4_train, y4_train, X4_test).flatten()
+#prediction5 = predict(X5_train, y5_train, X5_test).flatten()
+prediction6 = predict(X6_train, y6_train, X6_test).flatten()
+prediction7 = predict(X7_train, y7_train, X7_test).flatten()
+prediction8 = predict(X8_train, y8_train, X8_test).flatten()
+prediction9 = predict(X9_train, y9_train, X9_test).flatten()
+prediction10 = predict(X10_train, y10_train, X10_test).flatten()
+prediction11 = predict(X11_train, y11_train, X11_test).flatten()
+#prediction12 = predict(X12_train, y12_train, X12_test).flatten()
+
+predicted = [prediction1,prediction2,prediction3,prediction4,prediction6,prediction7,prediction8,prediction9,prediction10,
+             prediction11]
+
+column_names = {'0':'16-B', '1':'16-P', '2':'11-B','3': '11-P','4': '24-P', '5':'36-B', '6':'36-P', '7':'31-B','8': '31-P','9': '44-B'}
+predicted_data = pd.DataFrame(predicted).T
+predicted_data = predicted_data.rename(columns=column_names)
 print(predicted_data)
