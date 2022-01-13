@@ -53,7 +53,7 @@ X10 = data[['GI - 31', 'PPD - 44', 'PPD - 31 B', 'PPD - 11', 'PI - 44', 'PI - 24
             'GI - 16', 'PPD - 44 P', 'PPD - 44 B', 'PPD - 16', 'PI - 11', 'PPD - 31', 'PPD - 24', 'PI - 36', 'Interleukina – 44P',
             'Interleukina – 36P', 'Interleukina – 36B', 'Interleukina – 31B', 'Interleukina – 24B', 'Interleukina – 11P', 'GI - 44', 'GI - 11', 'API']]
 
-X10 = imputer4.fit_transform(X10)
+X10 = imputer1.fit_transform(X10)
 #print(X2)
 X_train,X_test,y_train,y_test=train_test_split(X10,y5,test_size=0.1,random_state=42)
 

@@ -3,7 +3,7 @@ import pathlib
 
 import pandas as pd
 
-from processing.utils import perform_processing
+from utils import perform_processing
 
 
 def main():
